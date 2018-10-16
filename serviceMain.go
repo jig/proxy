@@ -21,8 +21,10 @@ func Service(serviceAddr, destAddr string, stop <-chan os.Signal) {
 	}
 
 	router := mux.NewRouter()
-	router.HandleFunc("/",
-		httpmiddleware.MaxConnections(64, NewProxy(512, destAddrURL).Proxy))
+	router.PathPrefix("/").Handler(
+		httpmiddleware.MaxConnections(64,
+			httpmiddleware.Debug(
+				NewProxy(512, destAddrURL).Proxy)))
 
 	server := &http.Server{
 		Addr:    serviceAddr,

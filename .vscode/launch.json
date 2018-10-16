@@ -12,8 +12,9 @@
             "program": "${workspaceRoot}/cmd/proxy",
             "env": {
                 "PROXY_SERV": ":7778",
-                "PROXY_DEST": "http://localhost:7777/",
-            }
+                "PROXY_DEST": "http://localhost:3000/",
+            },
+            "showLog": true,
         }
     ]
 }

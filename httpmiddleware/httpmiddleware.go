@@ -42,6 +42,7 @@ func Count(count *CountMap, next http.HandlerFunc) http.HandlerFunc {
 func Debug(next http.HandlerFunc) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		log.Printf("%s %-4.4s %s", r.RemoteAddr, r.Method, r.RequestURI)
+		log.Printf("%+v", r)
 		r.Body = ioaux.TeeReadCloser(r.Body, os.Stderr)
 		next.ServeHTTP(&debugResponseWriter{w}, r)
 	}
@@ -54,7 +55,7 @@ func httpNoOp(next http.HandlerFunc) http.HandlerFunc {
 }
 
 func (drw *debugResponseWriter) Write(b []byte) (int, error) {
-	log.Println(string(b))
+	log.Println("...response:\n", string(b))
 	return drw.ResponseWriter.Write(b)
 }
 
